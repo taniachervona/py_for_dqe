@@ -101,18 +101,23 @@ def normalize_sentence_including_first_separator(sentence: str):
     return item
 
 
+def split_string_with_colon(string_var: str):
+    return string_var.split(sep=':')
+
+
 def normalize_text(full_text: str):
-    input_var = full_text.split(sep=':')[0].capitalize() + ':'
-    sep_with_point = full_text.split(sep=':')[1].split(sep='.')
+    input_var = split_string_with_colon(
+        full_text)[0].capitalize() + ':'
+    sep_with_point = split_string_with_colon(
+        full_text)[1].split(sep='.')
     for i in sep_with_point[:-1]:
         input_var = input_var + \
-                    normalize_sentence_including_first_separator(
-                        sentence=i)
+                    normalize_sentence_including_first_separator(i)
     return input_var
 
 
 print("\nnormalize_text() function result:")
-print(normalize_text(full_text=str_var))
+print(normalize_text(str_var))
 
 
 def choose_last_word_in_str(str_line: str):
@@ -122,14 +127,14 @@ def choose_last_word_in_str(str_line: str):
 
 def create_new_sentence(var: str):
     new_sentence = ''
-    for i in var.split(sep=':')[1].split(sep='.')[:-1]:
+    for i in split_string_with_colon(var)[1].split(sep='.')[:-1]:
         new_sentence = new_sentence + \
-                       choose_last_word_in_str(str_line=i) + ' '
+                       choose_last_word_in_str(i) + ' '
     return '\t' + new_sentence[:-1].capitalize() + '.'
 
 
 print("\ncreate_new_sentence() function result:")
-print(create_new_sentence(var=str_var))
+print(create_new_sentence(str_var))
 
 
 def fix_iz_to_is(text_var: str):
@@ -137,13 +142,13 @@ def fix_iz_to_is(text_var: str):
     final function for text preparation
     :return:
     """
-    result_str = normalize_text(full_text=text_var) + "\n" + \
-                 create_new_sentence(var=text_var)
+    result_str = normalize_text(text_var) + "\n" + \
+        create_new_sentence(text_var)
     return result_str.replace(" iz", " is")
 
 
 print("\nFINAL RESULT: ")
-print(fix_iz_to_is(text_var=str_var))
+print(fix_iz_to_is(str_var))
 
 
 def count_for_whitespaces(text_all: str):
@@ -155,4 +160,4 @@ def count_for_whitespaces(text_all: str):
 
 
 print("\ncount_for_whitespaces() function result:")
-print(count_for_whitespaces(text_all=str_var))
+print(count_for_whitespaces(str_var))
