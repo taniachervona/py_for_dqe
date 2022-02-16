@@ -35,7 +35,7 @@ def create_dict_with_unique_keys(list_of_dict: list[dict]):
     return return_dict
 
 
-def create_common_dict():
+def create_final_dict_with_initial_order():
     """
     final function with the initial order of the elements in the list
     :return:
@@ -56,7 +56,7 @@ def create_common_dict():
     return return_dict
 
 
-def create_common_dict_v2():
+def create_final_dict_without_ordering():
     """
     final function with the next order of the elements in the list:
     first unic keys, next - with max value
@@ -91,49 +91,68 @@ str_var = """homEwork:
 
   last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87."""
 
-sep_with_colon = str_var.split(sep=':')
-sep_with_point = sep_with_colon[1].split(sep='.')
+
+def normalize_sentence_including_first_separator(sentence: str):
+    if sentence.startswith("\t") is True \
+            or sentence.startswith("\n") is True:
+        item = '\n\t' + f'{sentence}.'.lstrip().capitalize()
+    else:
+        item = ' ' + f'{sentence}.'.lstrip().capitalize()
+    return item
 
 
-def check_and_leave_paragraphs():
-    input_var = ''
+def normalize_text(full_text: str):
+    input_var = full_text.split(sep=':')[0].capitalize() + ':'
+    sep_with_point = full_text.split(sep=':')[1].split(sep='.')
     for i in sep_with_point[:-1]:
-        if i.startswith("\t") is True \
-                or i.startswith("\n") is True:
-            item = '\n\t' + f'{i}.'.lstrip().capitalize()
-            print(item)
-        else:
-            item = ' ' + f'{i}.'.lstrip().capitalize()
-        input_var = input_var + item
+        input_var = input_var + \
+                    normalize_sentence_including_first_separator(
+                        sentence=i)
     return input_var
 
 
-def normalize_text_in_var():
-    result_str = sep_with_colon[0].capitalize() + ':'
-    return result_str + check_and_leave_paragraphs()
+print("\nnormalize_text() function result:")
+print(normalize_text(full_text=str_var))
 
 
-def create_new_sentence():
+def choose_last_word_in_str(str_line: str):
+    split_str = str_line.lstrip().split()
+    return split_str[-1]
+
+
+def create_new_sentence(var: str):
     new_sentence = ''
-    for i in sep_with_point[:-1]:
-        split_str = i.lstrip().split()
-        new_sentence = new_sentence + split_str[-1] + ' '
-    return '\n\t' + new_sentence[:-1].capitalize() + '.'
+    for i in var.split(sep=':')[1].split(sep='.')[:-1]:
+        new_sentence = new_sentence + \
+                       choose_last_word_in_str(str_line=i) + ' '
+    return '\t' + new_sentence[:-1].capitalize() + '.'
 
 
-def fix_iz_to_is():
+print("\ncreate_new_sentence() function result:")
+print(create_new_sentence(var=str_var))
+
+
+def fix_iz_to_is(text_var: str):
     """
     final function for text preparation
     :return:
     """
-    result_str = normalize_text_in_var() + \
-        create_new_sentence()
+    result_str = normalize_text(full_text=text_var) + "\n" + \
+                 create_new_sentence(var=text_var)
     return result_str.replace(" iz", " is")
 
 
-def count_for_whitespaces():
+print("\nFINAL RESULT: ")
+print(fix_iz_to_is(text_var=str_var))
+
+
+def count_for_whitespaces(text_all: str):
     count_var = 0
     for j in ['\n', '\t', ' ']:
-        var = str_var.count(j)
+        var = text_all.count(j)
         count_var = count_var + var
     return count_var
+
+
+print("\ncount_for_whitespaces() function result:")
+print(count_for_whitespaces(text_all=str_var))
